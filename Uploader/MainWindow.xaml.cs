@@ -24,7 +24,7 @@ namespace Uploader.Views
         public MainWindow()
         {
             InitializeComponent();
-            DataContext = new MainWindowVM();
+            DataContext = new MainWindowVM(); 
         }
     }
 }
