@@ -15,12 +15,17 @@
         </Grid.ColumnDefinitions>
         <Grid  Grid.Column="0">
             <ListBox x:Name="lbInstruction"
+                      Foreground="White" Background="Transparent"
+ BorderThickness="0"  FocusVisualStyle="{x:Null}"
+ FontSize="14"
                      SelectedItem="{Binding SelectedStep}"
                             ItemsSource="{Binding ProjectStepList,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
-                        <Grid x:Name="ListBox2">
-                            <TextBlock Text="{Binding Name}" Background="Red"/>
+                        <Grid x:Name="ListBox2"         Height="30"
+HorizontalAlignment="Stretch">
+                            <TextBlock Text="{Binding Name}" FontSize="14" Padding="0,5,0,0"
+Foreground="#ffffff"  HorizontalAlignment="Stretch"/>
                         </Grid>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
