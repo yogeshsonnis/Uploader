@@ -8,13 +8,14 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
     
-    <Grid Margin="10" Background="Red">
+    <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="300"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Grid  Grid.Column="0">
-            <ListBox x:Name="lbInstruction" Background="Red"
+            <ListBox x:Name="lbInstruction"
+                     SelectedItem="{Binding SelectedStep}"
                             ItemsSource="{Binding ProjectStepList,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
@@ -26,7 +27,7 @@
             </ListBox>
         </Grid>
         <Grid  Grid.Column="1">
-            <ContentControl Content="{Binding ViewContentObj}"/>
+            <ContentControl Content="{Binding SelectedStep.UserControl}"/>
         </Grid>
     </Grid>
 </UserControl>

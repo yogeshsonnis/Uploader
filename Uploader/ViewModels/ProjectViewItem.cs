@@ -16,8 +16,8 @@ namespace Uploader.ViewModels
             Name = displayName;
         }
 
-        public UserControl UserControl { get; private set; }
+        public UserControl UserControl { get;  set; }
         public string Name { get; set; }
-        public Object DataContext { get; private set; }
+        public Object DataContext { get;  set; }
     }
 }

@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Uploader.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="1200" d:DesignWidth="800">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVis" />
         <Style x:Key="ToggleSwitchStyle" TargetType="ToggleButton">
@@ -51,13 +51,20 @@
                 </Setter.Value>
             </Setter>
         </Style>
-
+        <Style x:Key="NormalTextStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="VerticalAlignment" Value="Top"/>
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+        </Style>
     </UserControl.Resources>
 
     <Grid>
         <ScrollViewer FocusVisualStyle="{x:Null}">
             <Grid>
-                <Grid>
+                <Grid Background="#FF5D5F60" Visibility="{Binding DataContext.IsSelectInfo, Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=TabControl,AncestorLevel=1}
+             ,Converter={StaticResource BoolToVis}}"
+               Margin="20,0">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="50"/>
                         <RowDefinition Height="20"/>
@@ -81,21 +88,29 @@
                         </Grid.ColumnDefinitions>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Domain"
-                                                       Foreground="White"
-                                                       VerticalAlignment="Center"
-                                                       FontSize="14"/>
-                            <ComboBox/>
+                            Foreground="White"
+                            VerticalAlignment="Center"
+                            FontSize="14"/>
+                            <ComboBox ItemsSource="{Binding DataContext.SelectedInfo.Domains,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=TabControl,AncestorLevel=1}}"
+                           VerticalAlignment="Center"
+                           Margin="10,0,0,0" Width="150" 
+                           SelectedIndex="0"/>
                         </StackPanel>
 
                         <StackPanel Orientation="Horizontal" Grid.Column="2">
                             <TextBlock Text="Categories"
-                                                       Foreground="White"
-                                                       VerticalAlignment="Center"
-                                                       FontSize="14"/>
-                            <ComboBox/>
+                            Foreground="White"
+                            VerticalAlignment="Center"
+                            FontSize="14"/>
+                            <ComboBox ItemsSource="{Binding DataContext.SelectedInfo.Categories,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=TabControl,AncestorLevel=1}}"
+                           VerticalAlignment="Center"
+                           Margin="10,0,0,0" Width="150" 
+                           SelectedIndex="0"/>
                         </StackPanel>
 
-                        <ToggleButton/>
+                        <ToggleButton Grid.Column="4"
+                           IsChecked="{Binding active,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}"
+                           Style="{StaticResource ToggleSwitchStyle}"/>
                     </Grid>
                     <Grid Grid.Row="2" Background="Transparent">
                         <Grid.ColumnDefinitions>
@@ -108,20 +123,21 @@
                                 <ColumnDefinition Width="70"/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="Intro"/>
-                            <TextBox Grid.Column="1" 
-                                                         Margin="10,0"/>
+                            <TextBlock Text="Intro" Style="{StaticResource NormalTextStyle}"/>
+                            <TextBox Grid.Column="1" Text="{Binding intro}" 
+                              Margin="10,0"/>
                         </Grid>
                         <Grid Grid.Column="2">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="auto"/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="Intro Image"
-                                                       TextWrapping="Wrap" MaxWidth="70"/>
+                            <TextBlock Text="Intro Image" Style="{StaticResource NormalTextStyle}"
+                            TextWrapping="Wrap" MaxWidth="70"/>
                             <Border Grid.Column="1" BorderBrush="White" BorderThickness="1"
-                                                    Margin="10,0" Width="150">
-                                <ContentPresenter />
+                         Margin="10,0" Width="150">
+                                <ContentPresenter  
+                        Content="{Binding DataContext.SelectedInfo.IntroImage,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=TabControl,AncestorLevel=1}}" Margin="5"/>
                             </Border>
 
                         </Grid>
@@ -132,8 +148,8 @@
                                 <ColumnDefinition Width="70"/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="Summary" />
-                            <TextBox Grid.Column="1" Margin="10,0"/>
+                            <TextBlock Text="Summary" Style="{StaticResource NormalTextStyle}"/>
+                            <TextBox Grid.Column="1" Margin="10,0" Text="{Binding summary}"/>
                         </Grid>
                     </Grid>
                     <Grid Grid.Row="6" Background="Transparent">
@@ -142,8 +158,8 @@
                                 <ColumnDefinition Width="70"/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="Extension" />
-                            <TextBox Grid.Column="1" Margin="10,0"/>
+                            <TextBlock Text="Extension" Style="{StaticResource NormalTextStyle}"/>
+                            <TextBox Grid.Column="1" Margin="10,0" Text="{Binding extension}"/>
                         </Grid>
                     </Grid>
                     <Grid Grid.Row="8" Background="Transparent">
@@ -152,8 +168,9 @@
                                 <ColumnDefinition Width="70"/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="Materials" />
-                            <ListBox>
+                            <TextBlock Text="Materials" Style="{StaticResource NormalTextStyle}"/>
+                            <ListBox Grid.Column="1" Margin="10,0"
+                          ItemsSource="{Binding DataContext.SelectedInfo.Materials,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged, RelativeSource={RelativeSource AncestorType=TabControl,AncestorLevel=1}}">
                                 <ListBox.ItemContainerStyle>
                                     <Style TargetType="ListBoxItem">
                                         <Setter Property="Padding" Value="0"/>
@@ -162,14 +179,14 @@
                                             <Setter.Value>
                                                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
                                                     <Border x:Name="Bd"
-                           BorderBrush="{TemplateBinding BorderBrush}"
-                           BorderThickness="{TemplateBinding BorderThickness}"
-                           Background="{TemplateBinding Background}"
-                           Padding="0"
-                           SnapsToDevicePixels="true">
+BorderBrush="{TemplateBinding BorderBrush}"
+BorderThickness="{TemplateBinding BorderThickness}"
+Background="{TemplateBinding Background}"
+Padding="0"
+SnapsToDevicePixels="true">
                                                         <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                         SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
-                                         VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+              VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
                                                     </Border>
                                                 </ControlTemplate>
                                             </Setter.Value>
@@ -190,17 +207,17 @@
                                                 <ColumnDefinition/>
                                             </Grid.ColumnDefinitions>
                                             <TextBlock Text="{Binding}" FontSize="14"
-                                                                           VerticalAlignment="Center"/>
+                                                VerticalAlignment="Center"/>
                                             <Button Grid.Column="1" Margin="10,0"  Cursor="Hand"
-                                                                    Command="{Binding DataContext.CloseMaterialItemCommand
-                                                                , RelativeSource={RelativeSource AncestorType=TabControl,AncestorLevel=1}}"
-                                                                   CommandParameter="{Binding}">
+                                         Command="{Binding DataContext.CloseMaterialItemCommand
+                                     , RelativeSource={RelativeSource AncestorType=TabControl,AncestorLevel=1}}"
+                                        CommandParameter="{Binding}">
                                                 <Button.Template>
                                                     <ControlTemplate TargetType="Button" >
                                                         <Grid Background="Transparent">
                                                             <Path Data="M7.9785156 5.9804688 A 2.0002 2.0002 0 0 0 6.5859375 9.4140625L12.171875 15L6.5859375 20.585938 A 2.0002 2.0002 0 1 0 9.4140625 23.414062L15 17.828125L20.585938 23.414062 A 2.0002 2.0002 0 1 0 23.414062 20.585938L17.828125 15L23.414062 9.4140625 A 2.0002 2.0002 0 0 0 21.960938 5.9804688 A 2.0002 2.0002 0 0 0 20.585938 6.5859375L15 12.171875L9.4140625 6.5859375 A 2.0002 2.0002 0 0 0 7.9785156 5.9804688 z"
-                                              Fill="Black" Stretch="Uniform"
-                                              Height="12" Width="12"/>
+                   Fill="Black" Stretch="Uniform"
+                   Height="12" Width="12"/>
                                                         </Grid>
                                                     </ControlTemplate>
                                                 </Button.Template>
@@ -224,21 +241,21 @@
                                 <ColumnDefinition Width="70"/>
                                 <ColumnDefinition/>
                             </Grid.ColumnDefinitions>
-                            <TextBlock Text="Description"/>
+                            <TextBlock Text="Description" 
+                                Style="{StaticResource NormalTextStyle}"/>
                             <TextBox Grid.Column="1" Margin="10,0"/>
                         </Grid>
                     </Grid>
                     <Grid Grid.Row="2" Background="Transparent" Margin="20,0">
                         <StackPanel HorizontalAlignment="Left">
-                            <TextBlock Text="Media"
-                                                       HorizontalAlignment="Left"/>
+                            <TextBlock Text="Media" Style="{StaticResource NormalTextStyle}"
+                            HorizontalAlignment="Left"/>
                             <Image Grid.Column="1" Margin="0,5" Height="200" Width="250" Stretch="Uniform"
-                                                   Source="{StaticResource mediaDrawingImage}"/>
+                        Source="{StaticResource mediaDrawingImage}"/>
                         </StackPanel>
                     </Grid>
                 </Grid>
             </Grid>
         </ScrollViewer>
-
     </Grid>
 </UserControl>

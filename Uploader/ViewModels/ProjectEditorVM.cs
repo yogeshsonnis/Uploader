@@ -23,7 +23,7 @@ namespace Uploader.ViewModels
         public ProjectViewItem SelectedStep 
         { 
             get {  return selectedStep; }
-            private set 
+            set 
             { 
                 selectedStep= value;
                 OnPropertyChanged("SelectedStep");
@@ -59,14 +59,15 @@ namespace Uploader.ViewModels
         async private void LoadProject(ProjectItem projectItem)
         {
             ProjectRepo repo = new ProjectRepo(containerSetting);
-            var projectInfo = new ProjectInfo(); //await repo.GetProjectAsync(projectItem.Identifier);
-           
-            //Application.Current.Dispatcher.BeginInvoke((Action)delegate
-            //{
-            //    GenerateViews(projectInfo);
-               
-            //});
-           
+            // var projectInfo = new ProjectInfo();
+             var projectInfo =await repo.GetProjectAsync(projectItem.Identifier);
+
+            Application.Current.Dispatcher.BeginInvoke((Action)delegate
+            {
+                GenerateViews(projectInfo);
+
+            });
+
         }
 
         private void GenerateViews(ProjectInfo projectInfo)
