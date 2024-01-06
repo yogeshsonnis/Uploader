@@ -5,18 +5,20 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:controls="clr-namespace:Uploader.Views"
              mc:Ignorable="d" 
+             xmlns:local="clr-namespace:Uploader.ViewModels"
              d:DesignHeight="450" d:DesignWidth="800">
         <Grid>
-            <TabControl x:Name="tabControl" ItemsSource="{Binding OpenProjects}"
-                    SelectedItem="{Binding SelectedProject,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
-                <TabControl.ItemTemplate>
+       
+        <TabControl x:Name="tabControl" ItemsSource="{Binding OpenProjects}"          
+            SelectedItem="{Binding SelectedTab}">
+            <TabControl.ItemTemplate>
                     <DataTemplate>
                         <Border CornerRadius="10" Background="#FF5D5F60">
                             <StackPanel Orientation="Horizontal" Margin="10,0">
-                            <TextBlock Text="{Binding ProjectItem.Name}" Margin="5"
+                            <TextBlock Text="{Binding TabHeader}" Margin="5"
                                        HorizontalAlignment="Left"/>
                                 <Button x:Name="btnCloseTab" Margin="5" VerticalAlignment="Center"
-                                    Command="{Binding DataContext.CloseTab,RelativeSource={RelativeSource AncestorType=TabControl,AncestorLevel=1}}"
+                                    Command="{Binding DataContext.CloseProject,RelativeSource={RelativeSource AncestorType=TabControl,AncestorLevel=1}}"
                                     CommandParameter="{Binding}">
                                     <Button.Template>
                                         <ControlTemplate>
@@ -34,7 +36,7 @@
                 </TabControl.ItemTemplate>
                 <TabControl.ContentTemplate>
                     <DataTemplate>
-                        <controls:ProjectEditorView DataContext="{Binding OpenProjects}"/>
+                    <controls:ProjectEditorView DataContext="{Binding SelectedProject}"/>
                     </DataTemplate>
                 </TabControl.ContentTemplate>
             </TabControl>

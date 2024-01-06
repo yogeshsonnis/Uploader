@@ -7,13 +7,73 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Uploader.ViewModels
 {
-    internal class ProjectTabsVM: BaseViewModel
+    public class ProjectTabsVM: BaseViewModel
     {
-        public ObservableCollection<ProjectEditorVM> OpenProjects { get; set; } = new ObservableCollection<ProjectEditorVM>();
-        public ProjectEditorVM selectedProject;
+
+        private ObservableCollection<TabData> openProjects;
+        public ObservableCollection<TabData> OpenProjects
+        {
+            get { return openProjects; }
+            set
+            {
+                openProjects = value;
+                OnPropertyChanged("OpenProjects");
+            }
+        }
+
+        private TabData selectedTab;
+        public TabData SelectedTab
+        {
+            get { return selectedTab; }
+            set
+            {
+                selectedTab = value;
+                OnPropertyChanged("SelectedTab");
+            }
+        }
+        public RelayCommand CloseProject { get; set; }
+
+        public ProjectTabsVM()
+        {
+            CloseProject = new RelayCommand(s => OnCloseProject(s));
+            OpenProjects= new ObservableCollection<TabData>();
+        }
+
+        private void OnCloseProject(object s)
+        {
+            OpenProjects.Remove(s as TabData);
+        }
+
+        public void SaveCurrentProject()
+        {
+            throw new NotImplementedException(); // Todo
+        }
+
+        public void OpenProject(ProjectItem projectItem, ContainerSetting settings)
+        {
+            var vm = new TabData(projectItem, settings);
+            SelectedTab = vm;
+            OpenProjects.Add(vm);
+        }
+    }
+
+    public class TabData : BaseViewModel 
+    {
+        string tabHeader;
+        public string TabHeader
+        {
+            get { return tabHeader; }
+            set
+            {
+                tabHeader = value; OnPropertyChanged("TabHeader");
+            }
+        }
+
+        private ProjectEditorVM selectedProject;
         public ProjectEditorVM SelectedProject
         {
             get { return selectedProject; }
@@ -24,27 +84,10 @@ namespace Uploader.ViewModels
             }
         }
 
-        public RelayCommand CloseProject { get; set; }
-
-        public ProjectTabsVM()
+        public TabData(ProjectItem projectItem, ContainerSetting settings) 
         {
-            CloseProject = new RelayCommand(s => OnCloseProject(s));
-        }
-
-        private void OnCloseProject(object s)
-        {
-            throw new NotImplementedException(); // Todo
-        }
-
-        public void SaveCurrentProject()
-        {
-            throw new NotImplementedException(); // Todo
-        }
-
-        public void OpenProject(ProjectItem projectItem, ContainerSetting settings)
-        {
-            var vm = new ProjectEditorVM(projectItem, settings);
-            OpenProjects.Add(vm);
+            SelectedProject= new ProjectEditorVM(projectItem, settings);
+            this.TabHeader = projectItem.Name;
         }
     }
 }

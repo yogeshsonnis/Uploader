@@ -7,15 +7,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Threading;
+using System.Windows;
 
 namespace Uploader.ViewModels
 {
-    internal class ProjectEditorVM : BaseViewModel
-    {
+    public class ProjectEditorVM : BaseViewModel
+    {       
         private ProjectItem projectItem;
         private ContainerSetting containerSetting;
 
-        public ObservableCollection<ProjectViewItem> ProjectStepList { get; private set; } = new ObservableCollection<ProjectViewItem>();
+        public ObservableCollection<ProjectViewItem> ProjectStepList { get;  set; } = new ObservableCollection<ProjectViewItem>();
 
         private ProjectViewItem selectedStep;
         public ProjectViewItem SelectedStep 
@@ -57,8 +59,14 @@ namespace Uploader.ViewModels
         async private void LoadProject(ProjectItem projectItem)
         {
             ProjectRepo repo = new ProjectRepo(containerSetting);
-            var projectInfo = await repo.GetProjectAsync(projectItem.Identifier);
-            GenerateViews(projectInfo);
+            var projectInfo = new ProjectInfo(); //await repo.GetProjectAsync(projectItem.Identifier);
+           
+            //Application.Current.Dispatcher.BeginInvoke((Action)delegate
+            //{
+            //    GenerateViews(projectInfo);
+               
+            //});
+           
         }
 
         private void GenerateViews(ProjectInfo projectInfo)
