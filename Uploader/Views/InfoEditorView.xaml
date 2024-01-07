@@ -51,12 +51,7 @@
                 </Setter.Value>
             </Setter>
         </Style>
-        <Style x:Key="NormalTextStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="14"/>
-            <Setter Property="Foreground" Value="White"/>
-            <Setter Property="VerticalAlignment" Value="Top"/>
-            <Setter Property="HorizontalAlignment" Value="Right"/>
-        </Style>
+      
     </UserControl.Resources>
 
     <Grid>
